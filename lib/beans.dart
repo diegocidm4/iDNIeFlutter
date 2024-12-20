@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:ffi';
-
 class PACEHandler  { 
   final NO_PACE_KEY_REFERENCE = 0;
   final MRZ_PACE_KEY_REFERENCE = 1;
@@ -112,7 +109,7 @@ class DatosDNIe {
      {
         List<Object?> lista = json?["erroresVerificacion"];
         for (var element in lista) {
-          this.erroresVerificacion?.add(element as String);  
+          this.erroresVerificacion.add(element as String);  
         }
      }
     }

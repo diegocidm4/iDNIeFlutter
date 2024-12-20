@@ -1,7 +1,8 @@
 name: idnieflut
-description: "A new Flutter plugin project."
+description: "Plugin Flutter para uso del DNIe en android e iOS."
 version: 0.0.1
-homepage:
+homepage: https://cqesolutions.com
+repository: https://github.com/diegocidm4/iDNIeFlutter
 
 environment:
   sdk: ^3.6.0
