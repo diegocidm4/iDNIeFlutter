@@ -21,8 +21,8 @@ Esta librería ofrece las siguientes funcionalidades:
 
 
 ### Firma de un texto en formato String con el certificado del DNIe que se le indique en certToUse:
-    ```Dart
-/**
+```Dart
+  /**
    * Firma un texto con el certificado del DNIe pasado como parámetro.
    * @param accessKey (Indica el can utilizado para establecer la comunicación)
    * @param pin (indica pin del DNIe)
@@ -36,7 +36,7 @@ Esta librería ofrece las siguientes funcionalidades:
 
 ### Firma el hash del documento pasado como parámetro en document con el certificado del DNIe que se le indique en certToUse:
 ```Dart
-/**
+  /**
    * Firma el hash pasado como parámetro con el certificado del DNIe pasado como parámetro.
    * @param accessKey (Indica el can utilizado para establecer la comunicación)
    * @param pin (indica pin del DNIe), hash (hash a firmar)
@@ -49,8 +49,8 @@ Esta librería ofrece las siguientes funcionalidades:
 ```
 
 ### Firma el hash y el digest pasados como parámetros con el certificado del DNIe que se le indique en certToUse:
-    ```Dart
-/**
+```Dart
+  /**
    * Firma el hash de un documento pasado como parámetro con el certificado del DNIe pasado como parámetro.
    * @param accessKey (Indica el can utilizado para establecer la comunicación)
    * @param pin (indica pin del DNIe)
@@ -60,7 +60,7 @@ Esta librería ofrece las siguientes funcionalidades:
   Future<RespuestaFirma?> signDocumentDNIe(String accessKey, String pin, String document, String certToUse) {
       return IdnieflutPlatform.instance.signDocumentDNIe(accessKey, pin, document, certToUse);
   }
-  ```
+```
 
 ## Install
 
