@@ -642,8 +642,7 @@ public class IdnieflutPlugin: NSObject, FlutterPlugin {
             certificate = DNIeCertificates.AUTENTICACION
         }
         
-        print(document)
-        let documentoUrl: URL = URL(string: document)!
+        let documentoUrl: URL = URL(string: encodeParamenters(parametro: document))!
         
         nfcActivo = false
         if(passportReader == nil)
@@ -774,4 +773,9 @@ public class IdnieflutPlugin: NSObject, FlutterPlugin {
 
     }
 
+    func encodeParamenters(parametro: String) -> String {
+        let allowedCharacterSet = (CharacterSet(charactersIn: "!*'():@&=+$,/?%#[] ").inverted)
+        let escapedString = parametro.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet) ?? ""
+        return escapedString
+    }
 }
