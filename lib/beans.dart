@@ -144,7 +144,7 @@ class DatosDNIe {
       this.apellidosRepresentante = json?["apellidosRepresentante"] ?? "";
       this.fechaInicioValidez = json?["fechaInicioValidez"] ?? "";
       this.fechaFinValidez = json?["fechaFinValidez"] ?? "";
-      this.estado = json?["estado"] ?? "";
+      this.estado = json?["estado"] ?? -1;
       this.email = json?["email"] ?? "";
     }
  }
