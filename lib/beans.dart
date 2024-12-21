@@ -134,18 +134,18 @@ class DatosDNIe {
 
     DatosCertificado.fromJson(Map? json)
     {
-      this.nif = json?["nif"];
-      this.nombre = json?["nombre"];
-      this.apellidos = json?["apellidos"];
-      this.fechaNacimiento = json?["fechaNacimiento"];
-      this.tipo = json?["tipo"];
-      this.nifRepresentante = json?["nifRepresentante"];
-      this.nombreRepresentante = json?["nombreRepresentante"];
-      this.apellidosRepresentante = json?["apellidosRepresentante"];
-      this.fechaInicioValidez = json?["fechaInicioValidez"];
-      this.fechaFinValidez = json?["fechaFinValidez"];
-      this.estado = json?["estado"];
-      this.email = json?["email"];
+      this.nif = json?["nif"] ?? "";
+      this.nombre = json?["nombre"] ?? "";
+      this.apellidos = json?["apellidos"] ?? "";
+      this.fechaNacimiento = json?["fechaNacimiento"] ?? "";
+      this.tipo = json?["tipo"] ?? "";
+      this.nifRepresentante = json?["nifRepresentante"] ?? "";
+      this.nombreRepresentante = json?["nombreRepresentante"] ?? "";
+      this.apellidosRepresentante = json?["apellidosRepresentante"] ?? "";
+      this.fechaInicioValidez = json?["fechaInicioValidez"] ?? "";
+      this.fechaFinValidez = json?["fechaFinValidez"] ?? "";
+      this.estado = json?["estado"] ?? "";
+      this.email = json?["email"] ?? "";
     }
  }
 

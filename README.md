@@ -1,6 +1,5 @@
 # idnieflut
-
-Librería para el uso del DNIe en ionic. Disponible para android e iOS.
+Plugin para el uso del DNIe en Flutter. Disponible para android e iOS.
 
 ## Funcionalidades
 Esta librería ofrece las siguientes funcionalidades:
@@ -69,7 +68,7 @@ Esta librería ofrece las siguientes funcionalidades:
 
 iDNIe ha sido creada y mantenida por [Diego Cid]
 
-Puede seguirme en Twitter en [@diegocidm4](http://twitter.com/diegocidm4).
+Puede seguirme en Twitter en [@diegocidm4](https://twitter.com/diegocidm4).
 
 ## Licencia
 La librería se distribuye con una licencia anual asociada a un app bundle.
