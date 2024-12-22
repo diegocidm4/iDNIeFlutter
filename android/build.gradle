@@ -32,12 +32,20 @@ android {
     }
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 22
     }
 
     dependencies {
         testImplementation("junit:junit:4.13.2")
         testImplementation("org.mockito:mockito-core:5.0.0")
+
+        implementation fileTree(dir: 'libs', include: ['*.jar'])
+        implementation fileTree(dir: 'dniedroid-release', include: ['*.aar', '*.jar'], exclude: [])
+        implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.65'
+        implementation group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.65'
+        //Lectura NFC pasaporte biométrico
+        implementation 'net.sf.scuba:scuba-sc-android:0.0.18'
+        implementation 'org.jmrtd:jmrtd:0.7.18'
     }
 
     testOptions {
@@ -49,4 +57,12 @@ android {
             }
         }
     }
+}
+
+dependencies {
+    implementation fileTree(dir: 'dniedroid-release', include: ['*.aar', '*.jar'], exclude: [])
+    implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'], exclude: [])
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
 }

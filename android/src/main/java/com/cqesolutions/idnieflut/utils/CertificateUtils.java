@@ -1,12 +1,11 @@
-package com.cqesolutions.io.idniecap.utils;
+package com.cqesolutions.idnieflut.utils;
 
 import android.content.Context;
-import android.util.Base64;
 
-import com.cqesolutions.io.idniecap.bean.DatosCertificado;
-import com.cqesolutions.io.idniecap.bean.DatosCertificadoFirma;
-import com.cqesolutions.io.idniecap.bean.DatosDNIe;
-import com.cqesolutions.io.idniecap.utils.pki.Tool;
+import com.cqesolutions.idnieflut.bean.DatosCertificado;
+import com.cqesolutions.idnieflut.bean.DatosCertificadoFirma;
+import com.cqesolutions.idnieflut.bean.DatosDNIe;
+import com.cqesolutions.idnieflut.utils.pki.Tool;
 
 import java.io.IOException;
 import java.security.KeyStore;
@@ -18,10 +17,6 @@ import java.security.cert.X509Certificate;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import javax.security.auth.x500.X500Principal;
-
-import es.gob.jmulticard.jse.provider.DnieProvider;
 
 /**
  * Created by Diego on 08/11/2018.

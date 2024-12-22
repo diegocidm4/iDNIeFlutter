@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
@@ -13,8 +15,8 @@ class MethodChannelIdnieflut extends IdnieflutPlatform {
   @override
   Future<EstadoLicencia?> configure(String apiKey) async {
     final mapEstadoLicencia = await methodChannel.invokeMethod<Map>('configure', {"apiKey": apiKey});
-    
-    EstadoLicencia estadoLicencia = EstadoLicencia.fromJson(mapEstadoLicencia!);
+
+    EstadoLicencia estadoLicencia = EstadoLicencia.fromJson(mapEstadoLicencia);
     return estadoLicencia;
   }
 

@@ -1,4 +1,4 @@
-package com.cqesolutions.io.idniecap.jj2000;
+package com.cqesolutions.idnieflut.jj2000;
 
 import android.graphics.Bitmap;
 

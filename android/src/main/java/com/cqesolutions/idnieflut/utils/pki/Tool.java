@@ -1,4 +1,4 @@
-package com.cqesolutions.io.idniecap.utils.pki;
+package com.cqesolutions.idnieflut.utils.pki;
 
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.x500.style.BCStyle;

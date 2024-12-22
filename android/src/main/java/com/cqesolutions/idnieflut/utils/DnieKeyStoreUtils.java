@@ -1,9 +1,9 @@
-package com.cqesolutions.io.idniecap.utils;
+package com.cqesolutions.idnieflut.utils;
 
 import android.util.Base64;
 
-import com.cqesolutions.io.idniecap.bean.DatosDNIe;
-import com.cqesolutions.io.idniecap.bean.DatosICAO;
+import com.cqesolutions.idnieflut.bean.DatosDNIe;
+import com.cqesolutions.idnieflut.bean.DatosICAO;
 
 import de.tsenger.androsmex.mrtd.DG13;
 import de.tsenger.androsmex.mrtd.DG1_Dnie;
@@ -62,6 +62,7 @@ public class DnieKeyStoreUtils {
                 datosDNIe.setDireccion(m_dg13.getActualAddress());
                 datosDNIe.setProvinciaActual(m_dg13.getActualProvince());
                 datosDNIe.setMunicipioActual(m_dg13.getActualPopulation());
+                datosDNIe.setNumSoporte(m_dg1.getDocNumber());
             }
 
             if(foto)

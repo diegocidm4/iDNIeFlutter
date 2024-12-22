@@ -1,4 +1,4 @@
-package com.cqesolutions.io.idniecap.bean;
+package com.cqesolutions.idnieflut.bean;
 
 import java.io.Serializable;
 

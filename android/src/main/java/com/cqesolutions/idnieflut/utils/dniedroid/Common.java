@@ -1,4 +1,4 @@
-package com.cqesolutions.io.idniecap.utils.dniedroid;
+package com.cqesolutions.idnieflut.utils.dniedroid;
 
 import android.app.Activity;
 import android.nfc.NfcAdapter;
@@ -15,14 +15,12 @@ import org.bouncycastle.operator.DefaultDigestAlgorithmIdentifierFinder;
 import java.io.IOException;
 import java.security.DigestException;
 import java.security.InvalidKeyException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.Signature;
 import java.security.SignatureException;
 
 import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 

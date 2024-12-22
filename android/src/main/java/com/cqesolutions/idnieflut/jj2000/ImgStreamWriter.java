@@ -41,7 +41,7 @@
  * 
  * Copyright (c) 1999/2000 JJ2000 Partners.
  * */
-package com.cqesolutions.io.idniecap.jj2000;
+package com.cqesolutions.idnieflut.jj2000;
 
 import android.graphics.Bitmap;
 

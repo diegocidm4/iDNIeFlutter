@@ -96,7 +96,7 @@ class DatosDNIe {
      this.direccion = json?["direccion"]; 
      this.provinciaActual = json?["provinciaActual"];
      this.municipioActual = json?["municipioActual"]; 
-     this.numSoporte = json?["numSoporte"]; 
+     this.numSoporte = json?["numSoporte"] ?? ""; 
      this.certificadoAutenticacion = DatosCertificado.fromJson(json?["certificadoAutenticacion"]); 
      this.certificadoFirma = DatosCertificado.fromJson(json?["certificadoFirma"]); 
      this.certificadoCA = DatosCertificado.fromJson(json?["certificadoCA"]); 
@@ -105,7 +105,7 @@ class DatosDNIe {
      this.datosICAO  = DatosICAO.fromJson(json?["datosICAO"]); 
      this.can = json?["can"] ?? "";   
 
-     if(!json?["erroresVerificacion"].isEmpty)
+     if(json?["erroresVerificacion"] != null && !json?["erroresVerificacion"].isEmpty)
      {
         List<Object?> lista = json?["erroresVerificacion"];
         for (var element in lista) {
@@ -249,14 +249,7 @@ class DatosDNIe {
 
     RespuestaNFC.fromJson(Map? json)
     {
-      if(json?["disponible"] != null)
-      {
-        disponible = json?["disponible"]; 
-      }
-      
-      if(json?["activo"] != null)
-      {
-        activo = json?["activo"];
-      }
+      disponible = json?["disponible"] ?? false; 
+      activo = json?["activo"] ?? false;
     }
  }

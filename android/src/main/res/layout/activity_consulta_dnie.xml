@@ -6,4 +6,76 @@
     android:layout_height="match_parent"
     tools:context=".activities.ConsultaDNIe">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/conexion">
+        <TextView
+            android:id="@+id/base_info"
+            android:visibility="visible"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_gravity="center"
+            android:text=""
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/result_info"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_gravity="center"
+            android:text="Resultado"
+            android:textColor="#000000"
+            android:textSize="18sp"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:visibility="gone"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="160dp"
+            android:layout_below="@id/result_info"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:max="100"/>
+
+        <ImageView
+            android:id="@+id/dnieImg"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/progressBar"
+            android:contentDescription="@string/lib_nfc_logo_desc"
+            android:src="@drawable/dni30_grey_peq"/>
+<!--
+        <com.tramite.utils.graphic.CanvasView
+            android:id="@+id/photo"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:background="@color/colorTexto"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"/>
+-->
+        <LinearLayout
+            android:layout_alignBottom="@id/result_info"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/fragment_container"
+            android:orientation="vertical"
+            android:layout_centerInParent="true"
+            android:layout_weight="1">
+        </LinearLayout>
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,19 +1,12 @@
-package com.cqesolutions.io.idniecap.utils;
+package com.cqesolutions.idnieflut.utils;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Base64;
 
-import com.cqesolutions.io.idniecap.jj2000.J2kStreamDecoder;
+import com.cqesolutions.idnieflut.jj2000.J2kStreamDecoder;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by Diego on 05/11/2018.

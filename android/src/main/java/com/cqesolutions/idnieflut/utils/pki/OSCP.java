@@ -1,4 +1,4 @@
-package com.cqesolutions.io.idniecap.utils.pki;
+package com.cqesolutions.idnieflut.utils.pki;
 
 import android.util.Log;
 

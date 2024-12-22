@@ -1,4 +1,4 @@
-package com.cqesolutions.io.idniecap.utils;
+package com.cqesolutions.idnieflut.utils;
 
 import android.content.Context;
 

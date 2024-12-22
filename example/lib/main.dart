@@ -9,6 +9,7 @@ import 'package:idnieflut/idnieflut.dart';
 import 'package:crypto/crypto.dart';
 import 'package:file_picker/file_picker.dart';
 
+
 void main() {
   runApp(const MyApp());
 }
@@ -58,7 +59,14 @@ class _MyAppState extends State<MyWidget> {
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initiDNIe() async {
     var estadoLicencia = await _idnieflutPlugin.configure("");
-    
+
+    /*
+    var nfc = await _idnieflutPlugin.isNFCEnable();
+    print("[NFC] - Respuesta NFC");
+    print(nfc?.disponible);
+    print(nfc?.activo);
+    */
+  
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.
@@ -88,104 +96,21 @@ class _MyAppState extends State<MyWidget> {
 
   void _firmaTexto(BuildContext ctx, String can, String pin) async
   {
+    if (Platform.isIOS) 
+    {
       List<String> tags =[];
       tags.add(DataGroupId().DG1);
       tags.add(DataGroupId().DG11);
       tags.add(DataGroupId().DG13);
 
-    var respuestaReadPassport = await _idnieflutPlugin.readPassport(can, PACEHandler().CAN_PACE_KEY_REFERENCE, tags);
+      var respuestaReadPassport = await _idnieflutPlugin.readPassport(can, PACEHandler().CAN_PACE_KEY_REFERENCE, tags);
 
-    
-    if(respuestaReadPassport?.datosDNIe != null)
-    {
-      sleep(Duration(seconds:5));
-
-      var respuestaFirma = await _idnieflutPlugin.signTextDNIe(can, pin, "Texto a firmar", DNIeCertificates().FIRMA); 
-
-      if(respuestaFirma?.firma != null)
-      {
-        showMyDialog(ctx, "Firma realizada", respuestaFirma?.firma ?? "");  
-      }
-      else{
-          var texto = respuestaFirma?.error ?? "Error no especificado";
-          showMyDialog(ctx, "Error", texto);
-      }
-    }
-    else
-    {
-      var texto = respuestaReadPassport?.error ?? "Error no especificado";
-      showMyDialog(ctx, "Error", texto);
-    }
-    
-  }
-
-  void _firmaHash(BuildContext ctx, String can, String pin) async
-  {
-      List<String> tags =[];
-      tags.add(DataGroupId().DG1);
-      tags.add(DataGroupId().DG11);
-      tags.add(DataGroupId().DG13);
-
-    var respuestaReadPassport = await _idnieflutPlugin.readPassport(can, PACEHandler().CAN_PACE_KEY_REFERENCE, tags);
-
-    
-    if(respuestaReadPassport?.datosDNIe != null)
-    {
-      sleep(Duration(seconds:5));
-
-      var textoFirma = "Texto a firmar";
-
-      var textoInBytes = utf8.encode(textoFirma);  
-      var digest = sha256.convert(textoInBytes);      
-
-      List<int> lista = [];
-      for (var byte in digest.bytes) {
-        lista.add(byte);
-      }
-
-      var respuestaFirma = await _idnieflutPlugin.signHashDNIe(can, pin, lista, DigestType().SHA256, DNIeCertificates().FIRMA); 
-
-      if(respuestaFirma?.firma != null)
-      {
-        showMyDialog(ctx, "Firma realizada", respuestaFirma?.firma ?? "");  
-      }
-      else{
-          var texto = respuestaFirma?.error ?? "Error no especificado";
-          showMyDialog(ctx, "Error", texto);
-      }
-
-    }
-    else
-    {
-      var texto = respuestaReadPassport?.error ?? "Error no especificado";
-      showMyDialog(ctx, "Error", texto);
-    }
-    
-  }
-
-  void _firmaDocumento(BuildContext ctx, String can, String pin) async
-  {
-    List<String> tags =[];
-    tags.add(DataGroupId().DG1);
-    tags.add(DataGroupId().DG11);
-    tags.add(DataGroupId().DG13);
-
-
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf'],
-      );
- 
-    if (result != null) {
-      String documento = result.files.single.path ?? "";
-
-      var respuestaReadPassport = await _idnieflutPlugin.readPassport(can, PACEHandler().CAN_PACE_KEY_REFERENCE, tags); 
       
       if(respuestaReadPassport?.datosDNIe != null)
       {
         sleep(Duration(seconds:5));
 
-        var respuestaFirma = await _idnieflutPlugin.signDocumentDNIe(can, pin, documento, DNIeCertificates().FIRMA); 
+        var respuestaFirma = await _idnieflutPlugin.signTextDNIe(can, pin, "Texto a firmar", DNIeCertificates().FIRMA); 
 
         if(respuestaFirma?.firma != null)
         {
@@ -194,17 +119,174 @@ class _MyAppState extends State<MyWidget> {
         else{
             var texto = respuestaFirma?.error ?? "Error no especificado";
             showMyDialog(ctx, "Error", texto);
-        }        
+        }
       }
       else
       {
         var texto = respuestaReadPassport?.error ?? "Error no especificado";
         showMyDialog(ctx, "Error", texto);
-      }     
-    } 
-    else 
+      }
+    }
+    else if(Platform.isAndroid)
     {
-      showMyDialog(ctx, "Aviso", "Fichero no seleccionado");
+        var respuestaFirma = await _idnieflutPlugin.signTextDNIe(can, pin, "Texto a firmar", DNIeCertificates().FIRMA); 
+
+        if(respuestaFirma?.firma != null)
+        {
+          showMyDialog(ctx, "Firma realizada", respuestaFirma?.firma ?? "");  
+        }
+        else{
+            var texto = respuestaFirma?.error ?? "Error no especificado";
+            showMyDialog(ctx, "Error", texto);
+        }
+
+    }
+    
+  }
+
+  void _firmaHash(BuildContext ctx, String can, String pin) async
+  {
+    if (Platform.isIOS) 
+    {
+
+      List<String> tags =[];
+      tags.add(DataGroupId().DG1);
+      tags.add(DataGroupId().DG11);
+      tags.add(DataGroupId().DG13);
+
+      var respuestaReadPassport = await _idnieflutPlugin.readPassport(can, PACEHandler().CAN_PACE_KEY_REFERENCE, tags);
+
+      
+      if(respuestaReadPassport?.datosDNIe != null)
+      {
+        sleep(Duration(seconds:5));
+
+        var textoFirma = "Texto a firmar";
+
+        var textoInBytes = utf8.encode(textoFirma);  
+        var digest = sha256.convert(textoInBytes);      
+
+        List<int> lista = [];
+        for (var byte in digest.bytes) {
+          lista.add(byte);
+        }
+
+        var respuestaFirma = await _idnieflutPlugin.signHashDNIe(can, pin, lista, DigestType().SHA256, DNIeCertificates().FIRMA); 
+
+        if(respuestaFirma?.firma != null)
+        {
+          showMyDialog(ctx, "Firma realizada", respuestaFirma?.firma ?? "");  
+        }
+        else{
+            var texto = respuestaFirma?.error ?? "Error no especificado";
+            showMyDialog(ctx, "Error", texto);
+        }
+
+      }
+      else
+      {
+        var texto = respuestaReadPassport?.error ?? "Error no especificado";
+        showMyDialog(ctx, "Error", texto);
+      }
+    }
+    if(Platform.isAndroid)
+    {
+             var textoFirma = "Texto a firmar";
+
+        var textoInBytes = utf8.encode(textoFirma);  
+        var digest = sha256.convert(textoInBytes);      
+
+        List<int> lista = [];
+        for (var byte in digest.bytes) {
+          lista.add(byte);
+        }
+
+        var respuestaFirma = await _idnieflutPlugin.signHashDNIe(can, pin, lista, DigestType().SHA256, DNIeCertificates().FIRMA); 
+
+        if(respuestaFirma?.firma != null)
+        {
+          showMyDialog(ctx, "Firma realizada", respuestaFirma?.firma ?? "");  
+        }
+        else{
+            var texto = respuestaFirma?.error ?? "Error no especificado";
+            showMyDialog(ctx, "Error", texto);
+        } 
+    }
+  }
+
+  void _firmaDocumento(BuildContext ctx, String can, String pin) async
+  {
+    if(Platform.isIOS)
+    {
+      List<String> tags =[];
+      tags.add(DataGroupId().DG1);
+      tags.add(DataGroupId().DG11);
+      tags.add(DataGroupId().DG13);
+
+
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+        );
+  
+      if (result != null) {
+        String documento = result.files.single.path ?? "";
+
+        var respuestaReadPassport = await _idnieflutPlugin.readPassport(can, PACEHandler().CAN_PACE_KEY_REFERENCE, tags); 
+        
+        if(respuestaReadPassport?.datosDNIe != null)
+        {
+          sleep(Duration(seconds:5));
+
+          var respuestaFirma = await _idnieflutPlugin.signDocumentDNIe(can, pin, documento, DNIeCertificates().FIRMA); 
+
+          if(respuestaFirma?.firma != null)
+          {
+            showMyDialog(ctx, "Firma realizada", respuestaFirma?.firma ?? "");  
+          }
+          else{
+              var texto = respuestaFirma?.error ?? "Error no especificado";
+              showMyDialog(ctx, "Error", texto);
+          }        
+        }
+        else
+        {
+          var texto = respuestaReadPassport?.error ?? "Error no especificado";
+          showMyDialog(ctx, "Error", texto);
+        }     
+      } 
+      else 
+      {
+        showMyDialog(ctx, "Aviso", "Fichero no seleccionado");
+      }
+    }
+    else if(Platform.isAndroid)
+    {
+        FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+        );
+        
+        if (result != null) {
+          String documento = result.files.single.path ?? "";
+          
+          var respuestaFirma = await _idnieflutPlugin.signDocumentDNIe(can, pin, documento, DNIeCertificates().FIRMA); 
+
+          if(respuestaFirma?.firma != null)
+          {
+            showMyDialog(ctx, "Firma realizada", respuestaFirma?.firma ?? "");  
+          }
+          else{
+              var texto = respuestaFirma?.error ?? "Error no especificado";
+              showMyDialog(ctx, "Error", texto);
+          }        
+        }
+        else 
+        {
+          showMyDialog(ctx, "Aviso", "Fichero no seleccionado");
+        }
+
+
     }
 
   }
