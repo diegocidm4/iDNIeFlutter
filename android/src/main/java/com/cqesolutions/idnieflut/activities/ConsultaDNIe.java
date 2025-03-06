@@ -206,12 +206,20 @@ public class ConsultaDNIe extends AppCompatActivity implements NfcAdapter.Reader
      */
     private void getReadError(String extra){
         _handler.post(() -> {
+            /*
             updateInfo("Aproxime el DNIe al dispositivo", extra);
             _ui_image.setImageResource(R.drawable.dni30_grey_peq);
             _ui_image.setVisibility(View.VISIBLE);
             _ui_image.startAnimation(_ui_dnieanimation);
             _progressBar.setProgress(0);
             _progressBar.setVisibility(View.GONE);
+            */
+            Intent data = new Intent();
+            data.putExtra("errorText", extra);
+
+            setResult(RESULT_CANCELED, data);
+            finish();
+
         });
     }
 

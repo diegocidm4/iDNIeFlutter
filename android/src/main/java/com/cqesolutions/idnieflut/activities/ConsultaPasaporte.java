@@ -353,10 +353,18 @@ public class ConsultaPasaporte extends AppCompatActivity implements NfcAdapter.R
      */
     private void getReadError(String extra){
         _handler.post(() -> {
+            /*
             updateInfo("Aproxime el eID al dispositivo", extra);
             _ui_image.setImageResource(R.drawable.dni30_grey_peq);
             _ui_image.setVisibility(View.VISIBLE);
             _ui_image.startAnimation(_ui_dnieanimation);
+            */
+            Intent data = new Intent();
+            data.putExtra("errorText", extra);
+
+            setResult(RESULT_CANCELED, data);
+            finish();
+
         });
     }
 
