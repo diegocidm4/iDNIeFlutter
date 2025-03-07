@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
@@ -26,9 +28,19 @@ class MethodChannelIdnieflut extends IdnieflutPlatform {
       return mrzKey;
   }
 
+/*
   @override
   Future<RespuestaReadPassport?> readPassport(String accessKey, int paceKeyReference, List<String> tags) async{
-    final mapRespuestaReadPassport = await methodChannel.invokeMethod<Map>('readPassport', {"accessKey": accessKey,"paceKeyReference": paceKeyReference,"tags": tags});
+    final mapRespuestaReadPassport = await methodChannel.invokeMethod<Map>('readPassport', {"accessKey": accessKey,"paceKeyReference": paceKeyReference,"tags": tags, "esDNIe": true});
+    
+    RespuestaReadPassport respuestaReadPassport = RespuestaReadPassport.fromJson(mapRespuestaReadPassport!);
+    return respuestaReadPassport;
+  }
+  */
+
+  @override
+  Future<RespuestaReadPassport?> readPassport(String accessKey, int paceKeyReference, List<String> tags, bool esDNIe) async{
+    final mapRespuestaReadPassport = await methodChannel.invokeMethod<Map>('readPassport', {"accessKey": accessKey,"paceKeyReference": paceKeyReference,"tags": tags, "esDNIe": esDNIe});
     
     RespuestaReadPassport respuestaReadPassport = RespuestaReadPassport.fromJson(mapRespuestaReadPassport!);
     return respuestaReadPassport;

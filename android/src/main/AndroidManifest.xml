@@ -12,6 +12,10 @@
             android:theme="@style/Theme.Android"
             android:exported="false" />
         <activity
+            android:name=".activities.ConsultaPasaporteCAN"
+            android:theme="@style/Theme.Android"
+            android:exported="false" />
+        <activity
             android:name=".activities.ConsultaDNIe"
             android:theme="@style/Theme.Android"
             android:exported="false" />

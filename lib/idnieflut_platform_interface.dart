@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'idnieflut_method_channel.dart';
@@ -31,8 +33,12 @@ abstract class IdnieflutPlatform extends PlatformInterface {
   Future<MRZKey?> getMRZKey(String passportNumber, String dateOfBirth, String dateOfExpiry) {
       throw UnimplementedError('getMRZKey() has not been implemented.');
   }
-
+/*
   Future<RespuestaReadPassport?> readPassport(String accessKey, int paceKeyReference, List<String> tags) {
+    throw UnimplementedError('readPassport() has not been implemented.');
+  }
+*/
+  Future<RespuestaReadPassport?> readPassport(String accessKey, int paceKeyReference, List<String> tags, bool esDNIe) {
     throw UnimplementedError('readPassport() has not been implemented.');
   }
 

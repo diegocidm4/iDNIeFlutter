@@ -22,7 +22,7 @@ class MockIdnieflutPlatform
   }
   
   @override
-  Future<RespuestaReadPassport?> readPassport(String accessKey, int paceKeyReference, List<String> tags) {
+  Future<RespuestaReadPassport?> readPassport(String accessKey, int paceKeyReference, List<String> tags, bool esDNIe) {
     // TODO: implement readPassport
     throw UnimplementedError();
   }

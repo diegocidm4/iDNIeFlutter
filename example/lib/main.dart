@@ -78,7 +78,7 @@ class _MyAppState extends State<MyWidget> {
   {
     List<String> tags =[];
 
-    var respuestaReadPassport = await _idnieflutPlugin.readPassport(can, PACEHandler().CAN_PACE_KEY_REFERENCE, tags);
+    var respuestaReadPassport = await _idnieflutPlugin.readPassport(can, PACEHandler().CAN_PACE_KEY_REFERENCE, tags, true);
 
     var texto = "";
     
@@ -103,7 +103,7 @@ class _MyAppState extends State<MyWidget> {
       tags.add(DataGroupId().DG11);
       tags.add(DataGroupId().DG13);
 
-      var respuestaReadPassport = await _idnieflutPlugin.readPassport(can, PACEHandler().CAN_PACE_KEY_REFERENCE, tags);
+      var respuestaReadPassport = await _idnieflutPlugin.readPassport(can, PACEHandler().CAN_PACE_KEY_REFERENCE, tags, true);
 
       
       if(respuestaReadPassport?.datosDNIe != null)
@@ -154,7 +154,7 @@ class _MyAppState extends State<MyWidget> {
       tags.add(DataGroupId().DG11);
       tags.add(DataGroupId().DG13);
 
-      var respuestaReadPassport = await _idnieflutPlugin.readPassport(can, PACEHandler().CAN_PACE_KEY_REFERENCE, tags);
+      var respuestaReadPassport = await _idnieflutPlugin.readPassport(can, PACEHandler().CAN_PACE_KEY_REFERENCE, tags, true);
 
       
       if(respuestaReadPassport?.datosDNIe != null)
@@ -232,7 +232,7 @@ class _MyAppState extends State<MyWidget> {
       if (result != null) {
         String documento = result.files.single.path ?? "";
 
-        var respuestaReadPassport = await _idnieflutPlugin.readPassport(can, PACEHandler().CAN_PACE_KEY_REFERENCE, tags); 
+        var respuestaReadPassport = await _idnieflutPlugin.readPassport(can, PACEHandler().CAN_PACE_KEY_REFERENCE, tags, true); 
         
         if(respuestaReadPassport?.datosDNIe != null)
         {

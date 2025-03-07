@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.cqesolutions.idnieflut.activities.ConsultaDNIe;
 import com.cqesolutions.idnieflut.activities.ConsultaPasaporte;
+import com.cqesolutions.idnieflut.activities.ConsultaPasaporteCAN;
 import com.cqesolutions.idnieflut.activities.FirmaDNIe;
 import com.cqesolutions.idnieflut.bean.DatosCertificado;
 import com.cqesolutions.idnieflut.bean.DatosCertificadoFirma;
@@ -158,6 +159,7 @@ public class IdnieflutPlugin implements FlutterPlugin, MethodCallHandler, Activi
     String accessKey = call.argument("accessKey");
     int paceKeyReference = call.argument("paceKeyReference");
     ArrayList<String> jtags = call.argument("tags");
+    Boolean esDNIe = call.argument("esDNIe");
 
     String[] tags = new String[jtags.size()];
 
@@ -166,7 +168,7 @@ public class IdnieflutPlugin implements FlutterPlugin, MethodCallHandler, Activi
       tags[i]=jtags.get(i);
     }
 
-    boolean esperaRespuesta = readPassport(accessKey, paceKeyReference, tags);
+    boolean esperaRespuesta = readPassport(accessKey, paceKeyReference, tags, esDNIe);
 
     if (!esperaRespuesta) {
       result.notImplemented();
@@ -412,7 +414,7 @@ public class IdnieflutPlugin implements FlutterPlugin, MethodCallHandler, Activi
     return passportNumber+"#"+dateOfBirth+"#"+dateOfExpiry;
   }
 
-  public boolean readPassport(String accessKey, int paceKeyReference, String[] tags){
+  public boolean readPassport(String accessKey, int paceKeyReference, String[] tags, boolean esDNIe){
       boolean recuperaFoto = false;
       boolean recuperaFirma = false;
       if(tags.length==0)
@@ -431,8 +433,7 @@ public class IdnieflutPlugin implements FlutterPlugin, MethodCallHandler, Activi
           }
       }
       boolean esperaRespuesta = false;
-      switch (paceKeyReference)
-      {
+      switch (paceKeyReference) {
           case 1:
               //Open activity to read DNIe
               Intent intentPassport = new Intent(activity, ConsultaPasaporte.class);
@@ -454,6 +455,10 @@ public class IdnieflutPlugin implements FlutterPlugin, MethodCallHandler, Activi
 
               //Open activity to read DNIe
               Intent intent = new Intent(activity, ConsultaDNIe.class);
+              if (!esDNIe)
+              {
+                  intent = new Intent(activity, ConsultaPasaporteCAN.class);
+              }
               intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
               intent.putExtra("CAN", accessKey);
               intent.putExtra("recuperaFoto", recuperaFoto);

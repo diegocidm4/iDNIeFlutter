@@ -22,6 +22,7 @@ class Idnieflut {
       return IdnieflutPlatform.instance.getMRZKey(passportNumber, dateOfBirth, dateOfExpiry);
   }
 
+/*
   /**
    * Lee el eID utilizando la conexión NFC.
    * @param accessKey (Indica el can o mrz utilizado para establecer la comunicación)
@@ -29,7 +30,19 @@ class Idnieflut {
    * @param tags (indica los dataGroups a leer del documento. [] para leer todos. En android si no se especifica DG2 no se recupera la foto y si no se especifica DG7 no se recupera la firma, el resto de DGs se recuperan siempre)
    */
   Future<RespuestaReadPassport?> readPassport(String accessKey, int paceKeyReference, List<String> tags) {
-      return IdnieflutPlatform.instance.readPassport(accessKey, paceKeyReference, tags);
+      return IdnieflutPlatform.instance.readPassport(accessKey, paceKeyReference, tags, true);
+  }
+*/
+
+  /**
+   * Lee el eID utilizando la conexión NFC.
+   * @param accessKey (Indica el can o mrz utilizado para establecer la comunicación)
+   * @param paceKeyReference (indica el tipo de clave usada en la conexión, se puede utilizar CAN o MRZ)
+   * @param tags (indica los dataGroups a leer del documento. [] para leer todos. En android si no se especifica DG2 no se recupera la foto y si no se especifica DG7 no se recupera la firma, el resto de DGs se recuperan siempre)
+   * @param esDNIe (Indica si el documento a leer es un DNIe u otro tipo)
+   */
+  Future<RespuestaReadPassport?> readPassport(String accessKey, int paceKeyReference, List<String> tags, bool esDNIe) {
+      return IdnieflutPlatform.instance.readPassport(accessKey, paceKeyReference, tags, esDNIe);
   }
 
   /**

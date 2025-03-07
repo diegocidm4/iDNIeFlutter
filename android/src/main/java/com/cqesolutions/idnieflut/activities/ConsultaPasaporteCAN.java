@@ -37,6 +37,7 @@ import net.sf.scuba.smartcards.CardService;
 import net.sf.scuba.smartcards.CardServiceException;
 
 import org.jmrtd.BACKey;
+import org.jmrtd.PACEKeySpec;
 import org.jmrtd.PassportService;
 import org.jmrtd.lds.CardAccessFile;
 import org.jmrtd.lds.PACEInfo;
@@ -62,7 +63,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ConsultaPasaporte extends AppCompatActivity implements NfcAdapter.ReaderCallback {
+public class ConsultaPasaporteCAN extends AppCompatActivity implements NfcAdapter.ReaderCallback {
 
     private NfcAdapter nfcAdapter;
 
@@ -77,9 +78,7 @@ public class ConsultaPasaporte extends AppCompatActivity implements NfcAdapter.R
     DatosDNIe datosDnie = new DatosDNIe();
     DatosCertificadoFirma datosCertificado = new DatosCertificadoFirma();
     boolean passiveAuthResult = false;
-    private String passportNumber = null;
-    private String dateOfBirth = null;
-    private String dateOfExpiry = null;
+    private String _can = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,9 +98,7 @@ public class ConsultaPasaporte extends AppCompatActivity implements NfcAdapter.R
 
         _ui_image = findViewById(R.id.dnieImg);
         _ui_dnieanimation = AnimationUtils.loadAnimation(this, R.anim.dnie30_grey);
-        passportNumber = (String)getIntent().getExtras().get("passportNumber");
-        dateOfBirth = (String)getIntent().getExtras().get("dateOfBirth");
-        dateOfExpiry = (String)getIntent().getExtras().get("dateOfExpiry");
+        _can = (String) getIntent().getExtras().get("CAN");
 
         Common.EnableReaderMode(this);
 
@@ -118,17 +115,11 @@ public class ConsultaPasaporte extends AppCompatActivity implements NfcAdapter.R
             String[] techList = tag.getTechList();
             if(existeElemento(techList, "android.nfc.tech.IsoDep"))
             {
-                if(passportNumber != null
-                        && !passportNumber.isEmpty()
-                        && passportNumber.matches("[a-zA-Z0-9]*")
-                        && dateOfBirth != null
-                        && !dateOfBirth.isEmpty()
-                        && dateOfExpiry != null
-                        && !dateOfExpiry.isEmpty())
+                if(_can != null
+                        && !_can.isEmpty())
                 {
-                    String fNacimiento = DateUtils.formateaFechaeID(dateOfBirth, "yyMMdd", this);
-                    String fValidez = DateUtils.formateaFechaeID(dateOfExpiry, "yyMMdd", this);
-                    ReadTask(IsoDep.get(tag), new BACKey(passportNumber, fNacimiento, fValidez));
+                    PACEKeySpec canKey = PACEKeySpec.createCANKey(_can);
+                    ReadTask(IsoDep.get(tag), canKey);
                 }
                 else {
                     getReadError("Los datos introducidos no son correctos para establecer el canal seguro con el documento.");
@@ -145,7 +136,7 @@ public class ConsultaPasaporte extends AppCompatActivity implements NfcAdapter.R
         super.onResume();
     }
 
-    private void ReadTask(IsoDep isoDep, BACKey bacKey)
+    private void ReadTask(IsoDep isoDep, PACEKeySpec canKey)
     {
         reading();
         DG1File dg1File;
@@ -175,7 +166,7 @@ public class ConsultaPasaporte extends AppCompatActivity implements NfcAdapter.R
                 for (SecurityInfo securityInfo: securityInfoCollection) {
                     if(securityInfo instanceof PACEInfo)
                     {
-                        service.doPACE(bacKey, securityInfo.getObjectIdentifier(), PACEInfo.toParameterSpec(((PACEInfo) securityInfo).getParameterId()), null);
+                        service.doPACE(canKey, securityInfo.getObjectIdentifier(), PACEInfo.toParameterSpec(((PACEInfo) securityInfo).getParameterId()), null);
                         paceSucceeded = true;
                     }
                 }
@@ -193,7 +184,7 @@ public class ConsultaPasaporte extends AppCompatActivity implements NfcAdapter.R
                 }
                 catch (Exception ex)
                 {
-                    service.doBAC(bacKey);
+                    service.doBAC(canKey);
                 }
             }
 
