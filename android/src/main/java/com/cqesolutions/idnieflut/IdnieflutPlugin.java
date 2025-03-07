@@ -262,7 +262,7 @@ public class IdnieflutPlugin implements FlutterPlugin, MethodCallHandler, Activi
       jsonDatosDNIe.put("municipioNacimiento", datosDNIe.getMunicipioNacimiento());
       jsonDatosDNIe.put("nombrePadre", datosDNIe.getNombrePadre());
       jsonDatosDNIe.put("nombreMadre", datosDNIe.getNombreMadre());
-      jsonDatosDNIe.put("fechaValidez", datosDNIe.getFechaValidez());
+      jsonDatosDNIe.put("fechaValidez", DateUtils.formateaFechaDNIe(datosDNIe.getFechaValidez(), "dd/MM/yyyy", activity.getApplicationContext()));
       jsonDatosDNIe.put("emisor", datosDNIe.getEmisor());
       jsonDatosDNIe.put("nacionalidad", datosDNIe.getNacionalidad());
       jsonDatosDNIe.put("sexo", datosDNIe.getSexo());
