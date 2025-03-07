@@ -78,7 +78,7 @@ class _MyAppState extends State<MyWidget> {
   {
     List<String> tags =[];
 
-    var respuestaReadPassport = await _idnieflutPlugin.readPassport(can, PACEHandler().CAN_PACE_KEY_REFERENCE, tags, true);
+    var respuestaReadPassport = await _idnieflutPlugin.readPassport(can, PACEHandler().CAN_PACE_KEY_REFERENCE, tags, false);
 
     var texto = "";
     

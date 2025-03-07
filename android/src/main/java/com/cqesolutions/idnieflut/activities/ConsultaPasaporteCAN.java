@@ -2,12 +2,14 @@ package com.cqesolutions.idnieflut.activities;
 
 import static android.view.View.VISIBLE;
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -40,11 +42,13 @@ import org.jmrtd.BACKey;
 import org.jmrtd.PACEKeySpec;
 import org.jmrtd.PassportService;
 import org.jmrtd.lds.CardAccessFile;
+import org.jmrtd.lds.DisplayedImageInfo;
 import org.jmrtd.lds.PACEInfo;
 import org.jmrtd.lds.SODFile;
 import org.jmrtd.lds.SecurityInfo;
 import org.jmrtd.lds.icao.DG1File;
 import org.jmrtd.lds.icao.DG2File;
+import org.jmrtd.lds.icao.DG7File;
 import org.jmrtd.lds.iso19794.FaceImageInfo;
 import org.jmrtd.lds.iso19794.FaceInfo;
 
@@ -62,6 +66,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import de.tsenger.androsmex.mrtd.DG13;
 
 public class ConsultaPasaporteCAN extends AppCompatActivity implements NfcAdapter.ReaderCallback {
 
@@ -141,6 +147,7 @@ public class ConsultaPasaporteCAN extends AppCompatActivity implements NfcAdapte
         reading();
         DG1File dg1File;
         DG2File dg2File;
+        DG7File dg7File = null;
         SODFile sodFile;
         String imageBase64 = null;
         Bitmap bitmap = null;
@@ -191,35 +198,6 @@ public class ConsultaPasaporteCAN extends AppCompatActivity implements NfcAdapte
             CardFileInputStream dg1In = service.getInputStream(PassportService.EF_DG1);
             dg1File = new DG1File(dg1In);
 
-            CardFileInputStream dg2In = service.getInputStream(PassportService.EF_DG2);
-            dg2File = new DG2File(dg2In);
-            List<FaceImageInfo> allFaceImageInfo = new ArrayList<>();
-            List<FaceInfo> faceInfos = dg2File.getFaceInfos();
-            for (FaceInfo faceInfo: faceInfos) {
-                allFaceImageInfo.addAll(faceInfo.getFaceImageInfos());
-            }
-            if(!allFaceImageInfo.isEmpty())
-            {
-                FaceImageInfo faceImageInfo = allFaceImageInfo.get(0);
-                int imageLength = faceImageInfo.getImageLength();
-                DataInputStream dataInputStream = new DataInputStream(faceImageInfo.getImageInputStream());
-                byte[] buffer = new byte[imageLength];
-                dataInputStream.readFully(buffer, 0, imageLength);
-//                InputStream inputStream = new ByteArrayInputStream(buffer, 0, imageLength);
-//                bitmap = decodeImage(this@MainActivity, faceImageInfo.mimeType, inputStream)
-                datosDnie.setImagen(buffer);
-                imageBase64 = Base64.encodeToString(buffer, Base64.DEFAULT);
-            }
-
-            CardFileInputStream sodIn = service.getInputStream(PassportService.EF_SOD);
-            sodFile = new SODFile(sodIn);
-
-            //Recuperamos los datos del certificado con el que se firman los datos del documento
-            X509Certificate certificadoPublico = sodFile.getDocSigningCertificate();
-            datosCertificado = CertificateUtils.obtenerDatosCertificadoFirma(certificadoPublico);
-            //Comprobamos la autenticación pasiva
-            passiveAuthResult = doPassiveAuth(sodFile, dg1File, dg2File);
-
             String nombre = dg1File.getMRZInfo().getSecondaryIdentifier();
             String apellidos = dg1File.getMRZInfo().getPrimaryIdentifier();
             apellidos = apellidos.replaceAll(" ", "<");
@@ -245,6 +223,7 @@ public class ConsultaPasaporteCAN extends AppCompatActivity implements NfcAdapte
             datosDnie.setFechaNacimiento(dg1File.getMRZInfo().getDateOfBirth());
             datosDnie.setFechaValidez(dg1File.getMRZInfo().getDateOfExpiry());
             Gender gender = dg1File.getMRZInfo().getGender();
+
             String sexo = "";
             switch (gender)
             {
@@ -264,6 +243,86 @@ public class ConsultaPasaporteCAN extends AppCompatActivity implements NfcAdapte
             }
             datosDnie.setSexo(sexo);
             datosDnie.setNacionalidad(dg1File.getMRZInfo().getNationality());
+            //datosDNIe.setEmisor(m_dg1.getIssuer());
+
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    CardFileInputStream dg13In = service.getInputStream(PassportService.EF_DG13);
+                    DG13 dg13 = null;
+                    dg13 = new DG13(dg13In.readAllBytes());
+                    String name = dg13.getName();
+                    String surname1 = dg13.getSurName1();
+                    String surname2 = dg13.getSurName2();
+                    datosDnie.setNombreCompleto(surname1 + " " + surname2 + " " + name);
+                    datosDnie.setMunicipioNacimiento(dg13.getBirthPopulation());
+                    datosDnie.setProvinciaNacimiento(dg13.getBirthProvince());
+                    datosDnie.setApellido1(dg13.getSurName1());
+                    datosDnie.setApellido2(dg13.getSurName2());
+                    datosDnie.setNombrePadre(dg13.getFatherName());
+                    datosDnie.setNombreMadre(dg13.getMotherName());
+                    datosDnie.setFechaValidez(dg13.getExpirationDate().replaceAll(" ", "/"));
+                    datosDnie.setDireccion(dg13.getActualAddress());
+                    datosDnie.setProvinciaActual(dg13.getActualProvince());
+                    datosDnie.setMunicipioActual(dg13.getActualPopulation());
+                }
+            }
+            catch (Exception ex)
+            {
+                //No hacemos nada si hay una excepción
+            }
+
+            //Foto
+            CardFileInputStream dg2In = service.getInputStream(PassportService.EF_DG2);
+            dg2File = new DG2File(dg2In);
+            List<FaceImageInfo> allFaceImageInfo = new ArrayList<>();
+            List<FaceInfo> faceInfos = dg2File.getFaceInfos();
+            for (FaceInfo faceInfo: faceInfos) {
+                allFaceImageInfo.addAll(faceInfo.getFaceImageInfos());
+            }
+            if(!allFaceImageInfo.isEmpty())
+            {
+                FaceImageInfo faceImageInfo = allFaceImageInfo.get(0);
+                int imageLength = faceImageInfo.getImageLength();
+                DataInputStream dataInputStream = new DataInputStream(faceImageInfo.getImageInputStream());
+                byte[] buffer = new byte[imageLength];
+                dataInputStream.readFully(buffer, 0, imageLength);
+//                InputStream inputStream = new ByteArrayInputStream(buffer, 0, imageLength);
+//                bitmap = decodeImage(this@MainActivity, faceImageInfo.mimeType, inputStream)
+                datosDnie.setImagen(buffer);
+                imageBase64 = Base64.encodeToString(buffer, Base64.DEFAULT);
+            }
+
+            //Firma
+            try {
+                CardFileInputStream dg7In = service.getInputStream(PassportService.EF_DG7);
+                dg7File = new DG7File(dg7In);
+                List<DisplayedImageInfo> allDisplayedImageInfo = dg7File.getImages();
+                if(!allDisplayedImageInfo.isEmpty())
+                {
+                    DisplayedImageInfo displayedImageInfo = allDisplayedImageInfo.get(0);
+                    int imageLength = displayedImageInfo.getImageLength();
+                    DataInputStream dataInputStream = new DataInputStream(displayedImageInfo.getImageInputStream());
+                    byte[] buffer = new byte[imageLength];
+                    dataInputStream.readFully(buffer, 0, imageLength);
+                    datosDnie.setFirma(buffer);
+                    //imageBase64 = Base64.encodeToString(buffer, Base64.DEFAULT);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //No hacemos nada si hay una excepción
+            }
+
+            CardFileInputStream sodIn = service.getInputStream(PassportService.EF_SOD);
+            sodFile = new SODFile(sodIn);
+
+            //Recuperamos los datos del certificado con el que se firman los datos del documento
+            X509Certificate certificadoPublico = sodFile.getDocSigningCertificate();
+            datosCertificado = CertificateUtils.obtenerDatosCertificadoFirma(certificadoPublico);
+            //Comprobamos la autenticación pasiva
+            passiveAuthResult = doPassiveAuth(sodFile, dg1File, dg2File);
+
 
             //Recuperamos datos ICAO en base64
             DatosICAO datosICAO = new DatosICAO();
