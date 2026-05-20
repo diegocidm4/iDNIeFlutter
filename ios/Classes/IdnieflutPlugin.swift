@@ -26,15 +26,25 @@ public class IdnieflutPlugin: NSObject, FlutterPlugin {
     case "getMRZKey":
         getMRZKey(call: call, result: result)
     case "readPassport":
-        readPassport(call: call, result: result)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+            readPassport(call: call, result: result)
+        }
     case "signTextDNIe":
-        signTextDNIe(call: call, result: result)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+            signTextDNIe(call: call, result: result)
+        }
     case "signDocumentDNIe":
-        signDocumentDNIe(call: call, result: result)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+            signDocumentDNIe(call: call, result: result)
+        }
     case "signHashDNIe":
-        signHashDNIe(call: call, result: result)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+            signHashDNIe(call: call, result: result)
+        }
     case "isNFCEnable":
-        isNFCEnable(call: call, result: result)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+            isNFCEnable(call: call, result: result)
+        }
 
     default:
       result(FlutterMethodNotImplemented)
