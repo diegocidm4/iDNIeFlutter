@@ -19,37 +19,36 @@ public class IdnieflutPlugin: NSObject, FlutterPlugin {
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
     
-  public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+    public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     switch call.method {
     case "configure":
         configure(call: call, result: result)
     case "getMRZKey":
         getMRZKey(call: call, result: result)
     case "readPassport":
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-            readPassport(call: call, result: result)
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.readPassport(call: call, result: result)
         }
     case "signTextDNIe":
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-            signTextDNIe(call: call, result: result)
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.signTextDNIe(call: call, result: result)
         }
     case "signDocumentDNIe":
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-            signDocumentDNIe(call: call, result: result)
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.signDocumentDNIe(call: call, result: result)
         }
     case "signHashDNIe":
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-            signHashDNIe(call: call, result: result)
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.signHashDNIe(call: call, result: result)
         }
     case "isNFCEnable":
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
             isNFCEnable(call: call, result: result)
-        }
 
     default:
       result(FlutterMethodNotImplemented)
     }
   }
+
     
     private func configure(call: FlutterMethodCall, result: @escaping FlutterResult) {
         if let args = call.arguments as? Dictionary<String, Any>,

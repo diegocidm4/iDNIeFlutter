@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'idnieflut'
-  s.version          = '0.0.13'
+  s.version          = '0.0.14'
   s.summary          = 'Librería para el uso del DNIe en flutter. Disponible para android e iOS.'
   s.description      = <<-DESC
 A new Flutter plugin project.
