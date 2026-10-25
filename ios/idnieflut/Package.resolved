@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "idnie",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/diegocidm4/iDNIe.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "014f5726d2f041e736cfb520f11202c624debd77"
+      }
+    },
+    {
+      "identity" : "openssl",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/krzyzanowskim/OpenSSL.git",
+      "state" : {
+        "revision" : "8cb1d641ab5ebce2cd7cf31c93baef07bed672d4",
+        "version" : "1.1.2301"
+      }
+    }
+  ],
+  "version" : 2
+}
